@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { loginUser, clearAuthError } from '../store/authSlice'
+import { loginUser, registerUser, clearAuthError } from '../store/authSlice'
 import './Auth.css'
 
 function LoginPage() {
@@ -11,7 +11,7 @@ function LoginPage() {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { isAuthenticated, error } = useSelector((state) => state.auth)
+  const { isAuthenticated, error, users } = useSelector((state) => state.auth)
 
   // Clear previous errors when page loads
   useEffect(() => {
@@ -38,6 +38,19 @@ function LoginPage() {
     dispatch(loginUser({ email, password }))
   }
 
+  // Quick helper to fill demo account for testing
+  const handleDemoLogin = () => {
+    // If demo user doesn't exist, create it first
+    const demoEmail = 'demo@eventhub.com'
+    const demoPass = 'password123'
+    const exists = users.find((u) => u.email === demoEmail)
+    if (!exists) {
+      dispatch(registerUser({ name: 'Demo Student', email: demoEmail, password: demoPass }))
+    } else {
+      dispatch(loginUser({ email: demoEmail, password: demoPass }))
+    }
+  }
+
   return (
     <div className="auth-wrapper">
       <div className="auth-card">
@@ -48,6 +61,18 @@ function LoginPage() {
 
         {formError && <div className="alert alert-danger">{formError}</div>}
         {error && <div className="alert alert-danger">{error}</div>}
+
+        <div className="alert alert-info" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>💡 Quick test: Click to use demo credentials</span>
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            className="btn btn-outline"
+            style={{ padding: '4px 10px', fontSize: '0.8rem', background: '#fff' }}
+          >
+            Demo Login
+          </button>
+        </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
