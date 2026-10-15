@@ -6,25 +6,15 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-content">
-        <div className="footer-brand">
-          <span>🎟️</span>
-          <span>EventHub</span>
-        </div>
+        <div className="footer-brand">EventHub</div>
 
         <p className="footer-text">
-          Powered by Ticketmaster Discovery API • Built with React & Redux Toolkit
+          Event Management System • Web Programming Assignment 2
         </p>
 
         <div className="footer-links">
           <Link to="/">Events</Link>
-          <Link to="/my-events">My Registrations</Link>
-          <a
-            href="https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            API Docs ↗
-          </a>
+          <Link to="/my-events">My Events</Link>
         </div>
       </div>
     </footer>

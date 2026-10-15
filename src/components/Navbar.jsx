@@ -18,13 +18,12 @@ function Navbar() {
     <header className="navbar">
       <div className="container navbar-inner">
         <Link to="/" className="nav-brand">
-          <span className="nav-brand-icon">🎟️</span>
-          <span>EventHub</span>
+          EventHub
         </Link>
 
         <nav className="nav-links">
           <Link to="/" className="nav-link">
-            Explore Events
+            Events
           </Link>
           {isAuthenticated && (
             <Link to="/my-events" className="nav-link">
@@ -36,20 +35,23 @@ function Navbar() {
         <div className="nav-auth">
           {isAuthenticated ? (
             <>
-              <div className="user-greeting">
-                <span>👤</span>
-                <span>{currentUser?.name}</span>
-              </div>
-              <button onClick={handleLogout} className="btn btn-outline" style={{ padding: '6px 14px', fontSize: '0.85rem' }}>
+              <span className="user-greeting">
+                Hello, <strong>{currentUser?.name}</strong>
+              </span>
+              <button
+                onClick={handleLogout}
+                className="btn btn-outline"
+                style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+              >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="btn btn-outline" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
+              <Link to="/login" className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
                 Login
               </Link>
-              <Link to="/register" className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
+              <Link to="/register" className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
                 Register
               </Link>
             </>

@@ -15,12 +15,10 @@ function RegisterPage() {
   const navigate = useNavigate()
   const { isAuthenticated, error } = useSelector((state) => state.auth)
 
-  // Clear errors when entering page
   useEffect(() => {
     dispatch(clearAuthError())
   }, [dispatch])
 
-  // Redirect if logged in
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/')
@@ -31,9 +29,8 @@ function RegisterPage() {
     e.preventDefault()
     setFormError('')
 
-    // Validation
     if (!name.trim() || !email.trim() || !password.trim()) {
-      setFormError('Please fill in all required fields.')
+      setFormError('Please fill in all fields.')
       return
     }
 
@@ -54,8 +51,8 @@ function RegisterPage() {
     <div className="auth-wrapper">
       <div className="auth-card">
         <div className="auth-header">
-          <h2>Create Account</h2>
-          <p>Join EventHub to discover and register for events</p>
+          <h2>Register</h2>
+          <p>Create an account to register for events</p>
         </div>
 
         {formError && <div className="alert alert-danger">{formError}</div>}
@@ -107,20 +104,20 @@ function RegisterPage() {
               id="confirmPassword"
               type="password"
               className="form-input"
-              placeholder="Repeat your password"
+              placeholder="Confirm password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '8px' }}>
-            Register Now
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '6px' }}>
+            Register
           </button>
         </form>
 
         <div className="auth-footer">
-          Already have an account? <Link to="/login">Sign in here</Link>
+          Already have an account? <Link to="/login">Login here</Link>
         </div>
       </div>
     </div>

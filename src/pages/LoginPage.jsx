@@ -13,12 +13,10 @@ function LoginPage() {
   const navigate = useNavigate()
   const { isAuthenticated, error, users } = useSelector((state) => state.auth)
 
-  // Clear previous errors when page loads
   useEffect(() => {
     dispatch(clearAuthError())
   }, [dispatch])
 
-  // Redirect if already logged in
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/')
@@ -29,18 +27,15 @@ function LoginPage() {
     e.preventDefault()
     setFormError('')
 
-    // Basic validation
     if (!email.trim() || !password.trim()) {
-      setFormError('Please enter both email and password.')
+      setFormError('Please enter your email and password.')
       return
     }
 
     dispatch(loginUser({ email, password }))
   }
 
-  // Quick helper to fill demo account for testing
   const handleDemoLogin = () => {
-    // If demo user doesn't exist, create it first
     const demoEmail = 'demo@eventhub.com'
     const demoPass = 'password123'
     const exists = users.find((u) => u.email === demoEmail)
@@ -55,33 +50,21 @@ function LoginPage() {
     <div className="auth-wrapper">
       <div className="auth-card">
         <div className="auth-header">
-          <h2>Welcome Back!</h2>
-          <p>Login to your account to manage your events</p>
+          <h2>Login</h2>
+          <p>Sign in to manage your event registrations</p>
         </div>
 
         {formError && <div className="alert alert-danger">{formError}</div>}
         {error && <div className="alert alert-danger">{error}</div>}
 
-        <div className="alert alert-info" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span>💡 Quick test: Click to use demo credentials</span>
-          <button
-            type="button"
-            onClick={handleDemoLogin}
-            className="btn btn-outline"
-            style={{ padding: '4px 10px', fontSize: '0.8rem', background: '#fff' }}
-          >
-            Demo Login
-          </button>
-        </div>
-
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
               className="form-input"
-              placeholder="e.g. user@example.com"
+              placeholder="user@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -94,20 +77,27 @@ function LoginPage() {
               id="password"
               type="password"
               className="form-input"
-              placeholder="Enter your password"
+              placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '8px' }}>
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '6px' }}>
             Sign In
           </button>
         </form>
 
+        <div className="demo-box">
+          <span>Demo: demo@eventhub.com / password123</span>
+          <button type="button" onClick={handleDemoLogin} className="demo-btn">
+            Autofill
+          </button>
+        </div>
+
         <div className="auth-footer">
-          Don't have an account? <Link to="/register">Create one here</Link>
+          Don't have an account? <Link to="/register">Register here</Link>
         </div>
       </div>
     </div>

@@ -40,12 +40,12 @@ function EventDetailsPage() {
 
   if (detailStatus === 'failed' || (!selectedEvent && detailStatus === 'succeeded')) {
     return (
-      <div className="container" style={{ padding: '60px 20px', textAlign: 'center' }}>
+      <div className="container" style={{ padding: '50px 20px', textAlign: 'center' }}>
         <div className="alert alert-danger">
           <h3>Event Not Found</h3>
-          <p>{error || 'The requested event could not be located.'}</p>
+          <p>{error || 'The requested event could not be found.'}</p>
         </div>
-        <Link to="/" className="btn btn-primary" style={{ marginTop: '20px' }}>
+        <Link to="/" className="btn btn-primary" style={{ marginTop: '16px' }}>
           Back to Events
         </Link>
       </div>
@@ -77,9 +77,8 @@ function EventDetailsPage() {
 
   const price = selectedEvent.priceRanges?.[0]
     ? `$${selectedEvent.priceRanges[0].min} - $${selectedEvent.priceRanges[0].max} (${selectedEvent.priceRanges[0].currency})`
-    : 'Free / Standard Admission'
+    : 'Standard Admission'
 
-  // Check if currently logged in user is already registered for this event
   const isRegistered =
     isAuthenticated &&
     registrations.some(
@@ -111,49 +110,50 @@ function EventDetailsPage() {
   return (
     <div className="container details-container">
       <Link to="/" className="back-link">
-        ← Back to all events
+        &larr; Back to all events
       </Link>
 
       {successMessage && <div className="alert alert-success">{successMessage}</div>}
       {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
       <div className="details-card">
-        {/* Banner with Event Title */}
-        <div className="details-banner">
+        {/* Banner Image */}
+        <div className="details-banner-wrap">
           <img src={imageUrl} alt={selectedEvent.name} className="details-image" />
-          <div className="details-overlay">
-            <span className="badge badge-category">{category} {genre ? `• ${genre}` : ''}</span>
-            <h1>{selectedEvent.name}</h1>
-          </div>
+        </div>
+
+        {/* Title Header */}
+        <div className="details-header-section">
+          <span className="badge badge-category">
+            {category} {genre ? `/ ${genre}` : ''}
+          </span>
+          <h1>{selectedEvent.name}</h1>
         </div>
 
         {/* Details Body */}
         <div className="details-body">
-          {/* Main Content */}
           <div className="details-info-section">
             <div className="info-block">
-              <h3>About this Event</h3>
+              <h3>About the Event</h3>
               <p>
                 {selectedEvent.info ||
                   selectedEvent.pleaseNote ||
-                  'Join us for this exciting event. Secure your spot now to ensure admission.'}
+                  'No additional details provided for this event. Register below to secure your attendance.'}
               </p>
             </div>
 
             {selectedEvent.pleaseNote && selectedEvent.info && (
               <div className="info-block">
-                <h3>Please Note</h3>
+                <h3>Important Notes</h3>
                 <p>{selectedEvent.pleaseNote}</p>
               </div>
             )}
 
             <div className="info-block">
-              <h3>Location & Venue</h3>
-              <p>
-                <strong>{venue}</strong>
-              </p>
+              <h3>Venue & Location</h3>
+              <p><strong>{venue}</strong></p>
               <p style={{ color: '#64748b', marginTop: '4px' }}>
-                {locationString || 'Detailed address will be provided on confirmation.'}
+                {locationString || 'Location details will be confirmed upon registration.'}
               </p>
             </div>
 
@@ -165,58 +165,45 @@ function EventDetailsPage() {
                   rel="noopener noreferrer"
                   className="btn btn-outline"
                 >
-                  View on Official Ticketmaster Page ↗
+                  View on Ticketmaster Website
                 </a>
               </div>
             )}
           </div>
 
-          {/* Sidebar / Registration Action */}
+          {/* Registration Sidebar */}
           <div className="details-sidebar">
             <div className="registration-card">
-              <h3>Event Details</h3>
+              <h3>Event Summary</h3>
 
               <div className="meta-list">
                 <div className="meta-row">
-                  <span className="meta-icon">📅</span>
-                  <div>
-                    <span className="meta-label">Date & Time</span>
-                    <span className="meta-value">
-                      {eventDate} {eventTime && `at ${eventTime}`}
-                    </span>
-                  </div>
+                  <span className="meta-label">Date & Time</span>
+                  <span className="meta-value">
+                    {eventDate} {eventTime && `at ${eventTime}`}
+                  </span>
                 </div>
 
                 <div className="meta-row">
-                  <span className="meta-icon">📍</span>
-                  <div>
-                    <span className="meta-label">Venue</span>
-                    <span className="meta-value">{venue}</span>
-                  </div>
+                  <span className="meta-label">Venue</span>
+                  <span className="meta-value">{venue}</span>
                 </div>
 
                 <div className="meta-row">
-                  <span className="meta-icon">🏷️</span>
-                  <div>
-                    <span className="meta-label">Category</span>
-                    <span className="meta-value">{category}</span>
-                  </div>
+                  <span className="meta-label">Category</span>
+                  <span className="meta-value">{category}</span>
                 </div>
 
                 <div className="meta-row">
-                  <span className="meta-icon">💵</span>
-                  <div>
-                    <span className="meta-label">Estimated Price</span>
-                    <span className="meta-value">{price}</span>
-                  </div>
+                  <span className="meta-label">Price</span>
+                  <span className="meta-value">{price}</span>
                 </div>
               </div>
 
-              {/* Registration Action Area */}
               {isRegistered ? (
                 <div>
-                  <div className="alert alert-success" style={{ marginBottom: '12px' }}>
-                    ✓ You are registered for this event!
+                  <div className="alert alert-success" style={{ marginBottom: '10px' }}>
+                    You are registered for this event.
                   </div>
                   <Link
                     to="/my-events"
@@ -231,15 +218,10 @@ function EventDetailsPage() {
                   <button
                     onClick={handleRegister}
                     className="btn btn-primary"
-                    style={{ width: '100%', padding: '12px', fontSize: '1rem' }}
+                    style={{ width: '100%', padding: '10px', fontSize: '0.95rem' }}
                   >
-                    {isAuthenticated ? 'Register for Event' : 'Sign in to Register'}
+                    {isAuthenticated ? 'Register for Event' : 'Login to Register'}
                   </button>
-                  {!isAuthenticated && (
-                    <p style={{ fontSize: '0.8rem', color: '#64748b', textAlign: 'center', marginTop: '8px' }}>
-                      Free registration. Takes just 10 seconds!
-                    </p>
-                  )}
                 </div>
               )}
             </div>

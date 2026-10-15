@@ -17,7 +17,6 @@ function EventsPage() {
 
   const [localSearch, setLocalSearch] = useState(searchQuery)
 
-  // Fetch events on initial load or category change
   useEffect(() => {
     dispatch(
       fetchEvents({
@@ -55,34 +54,28 @@ function EventsPage() {
 
   return (
     <div className="container">
-      {/* Hero Banner */}
-      <section className="hero-section">
-        <h1 className="hero-title">Discover Exciting Events</h1>
-        <p className="hero-subtitle">
-          Find and register for concerts, sports matches, theatre, comedy shows, and tech meetups powered by Ticketmaster.
-        </p>
-      </section>
+      {/* Page Header */}
+      <div className="page-header">
+        <h1>Events</h1>
+        <p>Explore upcoming events, concerts, games, and shows.</p>
+      </div>
 
-      {/* Demo API key notice if applicable */}
       {demoNotice && (
-        <div className="alert alert-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span>ℹ️</span>
-          <span>{demoNotice}</span>
+        <div className="alert alert-info">
+          {demoNotice}
         </div>
       )}
 
       {/* Search and Filters */}
       <section className="filters-bar">
         <form onSubmit={handleSearchSubmit} className="search-row">
-          <div className="search-input-wrap">
-            <span className="search-icon">🔍</span>
-            <input
-              type="text"
-              placeholder="Search by event title, artist, or keywords..."
-              value={localSearch}
-              onChange={(e) => setLocalSearch(e.target.value)}
-            />
-          </div>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search by event title, artist, or keywords..."
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
+          />
 
           <button type="submit" className="btn btn-primary">
             Search
@@ -99,9 +92,9 @@ function EventsPage() {
           )}
         </form>
 
-        {/* Category Pills */}
+        {/* Categories */}
         <div className="category-pills">
-          <span className="category-label">Filter by Category:</span>
+          <span className="category-label">Category:</span>
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -115,43 +108,42 @@ function EventsPage() {
         </div>
       </section>
 
-      {/* Events Results Section */}
+      {/* Events Results */}
       <section>
         <div className="events-header">
           <h2>
-            {selectedCategory === 'All' ? 'Upcoming Events' : `${selectedCategory} Events`}
+            {selectedCategory === 'All' ? 'Available Events' : `${selectedCategory} Events`}
           </h2>
           <span className="events-count">
-            Showing {items.length} {items.length === 1 ? 'event' : 'events'}
+            {items.length} {items.length === 1 ? 'event' : 'events'}
           </span>
         </div>
 
         {status === 'loading' && (
           <div className="spinner-container">
             <div className="spinner"></div>
-            <p>Loading events from Ticketmaster...</p>
+            <p>Loading events...</p>
           </div>
         )}
 
         {status === 'failed' && (
           <div className="alert alert-danger">
-            <strong>Error:</strong> {error}
+            Error loading events: {error}
           </div>
         )}
 
         {status === 'succeeded' && items.length === 0 && (
           <div className="empty-state">
-            <div className="empty-state-icon">🎟️</div>
             <h3>No events found</h3>
-            <p style={{ color: '#64748b', marginTop: '6px' }}>
+            <p style={{ color: '#64748b', marginTop: '4px' }}>
               Try searching with another keyword or pick a different category.
             </p>
             <button
               onClick={handleClearSearch}
               className="btn btn-primary"
-              style={{ marginTop: '16px' }}
+              style={{ marginTop: '14px' }}
             >
-              View All Events
+              Reset Filters
             </button>
           </div>
         )}

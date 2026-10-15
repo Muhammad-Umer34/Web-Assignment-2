@@ -16,12 +16,10 @@ function MyEventsPage() {
     (state) => state.registrations
   )
 
-  // Filter registrations that belong to the current logged in user
   const userRegistrations = registrations.filter(
     (reg) => reg.userEmail === currentUser?.email
   )
 
-  // Determine upcoming vs completed dynamically
   const today = new Date().toISOString().split('T')[0]
 
   const upcomingEvents = userRegistrations.filter((r) => {
@@ -52,7 +50,7 @@ function MyEventsPage() {
     <div className="container">
       <div className="my-events-header">
         <h1>My Registered Events</h1>
-        <p>Manage and review all your event registrations in one place</p>
+        <p>Review and manage your event bookings.</p>
       </div>
 
       {successMessage && (
@@ -63,9 +61,9 @@ function MyEventsPage() {
           <span>{successMessage}</span>
           <button
             onClick={() => dispatch(clearRegistrationFeedback())}
-            style={{ background: 'none', fontSize: '1.1rem', color: '#065f46' }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.9rem', color: '#166534' }}
           >
-            ✕
+            Dismiss
           </button>
         </div>
       )}
@@ -95,15 +93,14 @@ function MyEventsPage() {
       {/* Registrations List */}
       {displayedEvents.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-state-icon">🎟️</div>
           <h3>No {activeTab !== 'all' ? activeTab : ''} events found</h3>
-          <p style={{ color: '#64748b', marginTop: '6px' }}>
+          <p style={{ color: '#64748b', marginTop: '4px' }}>
             {activeTab === 'upcoming'
-              ? "You haven't registered for any upcoming events yet."
+              ? 'You have not registered for any upcoming events yet.'
               : 'You do not have any past completed events.'}
           </p>
-          <Link to="/" className="btn btn-primary" style={{ marginTop: '16px' }}>
-            Explore Available Events
+          <Link to="/" className="btn btn-primary" style={{ marginTop: '14px' }}>
+            Browse Events
           </Link>
         </div>
       ) : (
@@ -137,13 +134,10 @@ function MyEventsPage() {
 
                     <div className="reg-details">
                       <span>
-                        📅 {reg.eventDate} {reg.eventTime && `at ${reg.eventTime}`}
+                        <strong>Date:</strong> {reg.eventDate} {reg.eventTime && `at ${reg.eventTime}`}
                       </span>
                       <span>
-                        📍 {reg.eventVenue}{reg.eventCity ? `, ${reg.eventCity}` : ''}
-                      </span>
-                      <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                        Registered on {new Date(reg.registeredAt).toLocaleDateString()}
+                        <strong>Venue:</strong> {reg.eventVenue}{reg.eventCity ? `, ${reg.eventCity}` : ''}
                       </span>
                     </div>
                   </div>
@@ -153,18 +147,18 @@ function MyEventsPage() {
                   <Link
                     to={`/events/${reg.eventId}`}
                     className="btn btn-outline"
-                    style={{ padding: '8px 14px', fontSize: '0.88rem' }}
+                    style={{ padding: '6px 12px', fontSize: '0.85rem' }}
                   >
-                    View Details
+                    Details
                   </Link>
 
                   {!isPast && (
                     <button
                       onClick={() => handleCancel(reg.id, reg.eventName)}
                       className="btn btn-danger"
-                      style={{ padding: '8px 14px', fontSize: '0.88rem' }}
+                      style={{ padding: '6px 12px', fontSize: '0.85rem' }}
                     >
-                      Cancel Booking
+                      Cancel
                     </button>
                   )}
                 </div>
