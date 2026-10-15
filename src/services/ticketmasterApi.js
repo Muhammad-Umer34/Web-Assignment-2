@@ -2,18 +2,13 @@ import { SAMPLE_EVENTS } from './mockEvents'
 
 const BASE_URL = 'https://app.ticketmaster.com/discovery/v2'
 
-// Get API Key from .env environment variable
 const getApiKey = () => {
   return import.meta.env.VITE_TICKETMASTER_API_KEY || ''
 }
 
-/**
- * Fetch events from Ticketmaster API or fallback to sample events
- */
 export async function fetchTicketmasterEvents({ keyword = '', classification = '' } = {}) {
   const apiKey = getApiKey()
 
-  // If no API key is provided, filter and return sample data
   if (!apiKey || apiKey === 'your_ticketmaster_api_key_here') {
     let filtered = [...SAMPLE_EVENTS]
 
@@ -40,7 +35,6 @@ export async function fetchTicketmasterEvents({ keyword = '', classification = '
     }
   }
 
-  // Live Ticketmaster API call
   try {
     let url = `${BASE_URL}/events.json?apikey=${apiKey}&size=20&sort=date,asc`
 
@@ -68,7 +62,6 @@ export async function fetchTicketmasterEvents({ keyword = '', classification = '
   } catch (error) {
     console.error('Failed to fetch from Ticketmaster API:', error)
 
-    // Fallback to sample data on error
     let filtered = [...SAMPLE_EVENTS]
     if (keyword.trim()) {
       filtered = filtered.filter((e) =>
@@ -84,13 +77,9 @@ export async function fetchTicketmasterEvents({ keyword = '', classification = '
   }
 }
 
-/**
- * Fetch single event details by ID
- */
 export async function fetchTicketmasterEventById(id) {
   const apiKey = getApiKey()
 
-  // If ID matches sample mock event or no API key, return from sample events
   if (id.startsWith('mock-') || !apiKey || apiKey === 'your_ticketmaster_api_key_here') {
     const found = SAMPLE_EVENTS.find((e) => e.id === id)
     if (found) return found
@@ -110,7 +99,6 @@ export async function fetchTicketmasterEventById(id) {
     return data
   } catch (err) {
     console.error('Error fetching event details:', err)
-    // fallback check in sample events
     return SAMPLE_EVENTS.find((e) => e.id === id) || null
   }
 }
